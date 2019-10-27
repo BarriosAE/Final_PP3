@@ -2,7 +2,8 @@
 # Import framework
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-import xmltodict
+from json import loads
+from json2xml import json2xml, readfromurl, readfromstring, readfromjson
 
 # Instantiate the app
 app = Flask(__name__)
@@ -16,24 +17,15 @@ class Product(Resource):
         return {
             'products': ['Ice cream', 'Chocolate', 'Fruit', 'Eggs']
         }
-
-@app.route('/Loco', methods=['GET', 'POST'])
-def Loco():
-
+data = readfromstring(
+    '{"login":"mojombo","id":1,"avatar_url":"https://avatars0.githubusercontent.com/u/1?v=4"}'
+)
+@app.route('/XML', methods=['GET', 'POST'])
+def XML():
     if request.method == 'GET':
-        content_dict = xmltodict.parse(Product)
-        print(Product)
-        print(content_dict)
-        return jsonify(Product)
-    else:
-        if request.method == 'POST':
-            xml_data = request.form['SomeKey']
-            content_dict = xmltodict.parse(xml_data)
-            print(Product)
-            print(content_dict)
-            return jsonify(content_dict)
-        else:
-            print ('La manquie')
+        return(json2xml.Json2xml(data, wrapper="custom", pretty=True).to_xml())
+    elif request.method == 'POST':
+        return (json2xml.Json2xml(data).to_xml())
 
 # Create routes
 api.add_resource(Product, '/')
@@ -41,4 +33,3 @@ api.add_resource(Product, '/')
 # Run the application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
-

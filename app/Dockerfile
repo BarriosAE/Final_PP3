@@ -1,4 +1,5 @@
-FROM python:3-onbuild
-RUN pip install xmltodict==0.12.0 lxml==4.4.1
-COPY . /usr/src/app
-CMD ["python", "api.py"]
+FROM python:alpine
+RUN pip3 install --upgrade pip
+ADD . /usr/src/app
+RUN pip3 install -r /usr/src/app/requirements.txt
+CMD ["python", "/usr/src/app/api.py"]
