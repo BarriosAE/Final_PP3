@@ -2,7 +2,7 @@
 # Import framework
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-from json import loads
+import json
 from json2xml import json2xml, readfromurl, readfromstring, readfromjson
 
 # Instantiate the app
@@ -17,15 +17,16 @@ class Product(Resource):
         return {
             'products': ['Ice cream', 'Chocolate', 'Fruit', 'Eggs']
         }
-data = readfromstring(
+producto=Product()
+data = json.loads(
     '{"login":"mojombo","id":1,"avatar_url":"https://avatars0.githubusercontent.com/u/1?v=4"}'
 )
 @app.route('/XML', methods=['GET', 'POST'])
 def XML():
     if request.method == 'GET':
-        return(json2xml.Json2xml(data, wrapper="custom", pretty=True).to_xml())
+        return(json2xml.Json2xml(producto.get(), wrapper="custom").to_xml())
     elif request.method == 'POST':
-        return (json2xml.Json2xml(data).to_xml())
+        return (json2xml.Json2xml(producto.get()).to_xml())
 
 # Create routes
 api.add_resource(Product, '/')
