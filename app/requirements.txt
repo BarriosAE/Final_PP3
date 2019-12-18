@@ -1,3 +1,2 @@
-flask>=1.0.0
-flask-restful==0.3.5
-flask-spyne>=0.3.2
+flask>=1.1.1
+flask-restful>=0.3.7
